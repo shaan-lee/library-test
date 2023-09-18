@@ -1,0 +1,16 @@
+*.exe
+*.mov
+*.png
+*.jpg
+*.webp
+*.gif
+*.json
+*.zip
+*.cfg
+*.env
+*.pyc
+*.txt
+*.plist
+
+ignore/
+/test_translate/*.html
