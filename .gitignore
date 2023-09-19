@@ -14,3 +14,4 @@
 
 ignore/
 /test_translate/*.html
+read_new_message.session
