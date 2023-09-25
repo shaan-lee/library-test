@@ -1,11 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import datetime
+import time
 
 driver = webdriver.Chrome("./chromedriver.exe")
 driver.get("https://komikstation.co/")
 
-datetime.sleep(3)
+time.sleep(3)
 
 popupPaths = [
     "/html/body/div/div[1]/div/div[3]/span",

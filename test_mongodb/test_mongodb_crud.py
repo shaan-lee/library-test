@@ -11,11 +11,11 @@ from pymongo.errors import BulkWriteError, DuplicateKeyError
 
 from datetime import datetime, timedelta
 import asyncio
-import datetime
+import time
 
 
 class Test(Document):
-    created_at: Indexed(datetime) = Field(default_factory=datetime.utcnow)
+    created_at: Indexed(datetime) = Field(default_factory=time.utcnow)
     test_string: str
     boolean_test: bool
 

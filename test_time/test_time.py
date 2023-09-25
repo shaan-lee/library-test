@@ -1,3 +1,3 @@
-import datetime
+import time
 
-print(datetime.strftime("%Y-%m-%d %H:%M:%S", datetime.localtime(datetime.time())))
+print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())))

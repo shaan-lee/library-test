@@ -1,5 +1,5 @@
 import logging as log
-import datetime
+import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -20,7 +20,7 @@ def go_to_url(url):
             driver.get(url)
         except Exception:
             log.warning("요청에러 다시 시도 : %s", url)
-            datetime.sleep(5)
+            time.sleep(5)
             limit_cnt += 1
             continue
         break

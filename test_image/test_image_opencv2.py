@@ -1,17 +1,20 @@
 import cv2
 from datetime import datetime
+
 # 이미지 읽기
-img1 = cv2.imread('./matchTest2.png')
-img2 = cv2.imread('./matchTest4.png')
+img1 = cv2.imread("./matchTest2.png")
+img2 = cv2.imread("./matchTest4.png")
 
 using_FAST = False
 
-feature_detector = dict(SIFT = cv2.SIFT_create(), 
-                        ORB = cv2.ORB_create(),
-                        brisk = cv2.BRISK_create(),
-                        akaze = cv2.AKAZE_create())
+feature_detector = dict(
+    SIFT=cv2.SIFT_create(),
+    ORB=cv2.ORB_create(),
+    brisk=cv2.BRISK_create(),
+    akaze=cv2.AKAZE_create(),
+)
 
-matching_type = 'flann' # 'bruteforce' or 'flann'
+matching_type = "flann"  # 'bruteforce' or 'flann'
 
 for type in list(feature_detector.keys()):
     start = datetime.now()
@@ -19,7 +22,7 @@ for type in list(feature_detector.keys()):
     detector = feature_detector[type]
 
     # 각 이미지에서 키포인트 및 디스크립터 계산
-    if using_FAST == True :
+    if using_FAST == True:
         fast = cv2.FastFeatureDetector_create()
         kp1 = fast.detect(img1, None)
         kp2 = fast.detect(img2, None)
@@ -30,31 +33,32 @@ for type in list(feature_detector.keys()):
         kp2, des2 = detector.detectAndCompute(img2, None)
 
     # 매칭 알고리즘 선정
-    if matching_type == 'bruteforce':
+    if matching_type == "bruteforce":
         matcher = cv2.BFMatcher()
-    elif matching_type == 'flann':
-        if type == 'SIFT' or type == 'FAST':
+    elif matching_type == "flann":
+        if type == "SIFT" or type == "FAST":
             # SIFT 파라미터
             FLANN_INDEX_KDTREE = 1
             index_params = dict(algorithm=FLANN_INDEX_KDTREE, trees=5)
             search_params = dict(checks=50)
-        elif type == 'ORB' :
+        elif type == "ORB":
             # ORB 파라미터
             FLANN_INDEX_LSH = 6
-            index_params= dict(algorithm = FLANN_INDEX_LSH,
-                            table_number = 6,
-                            key_size = 12,
-                            multi_probe_level = 1)
-            search_params=dict(checks=32)
+            index_params = dict(
+                algorithm=FLANN_INDEX_LSH,
+                table_number=6,
+                key_size=12,
+                multi_probe_level=1,
+            )
+            search_params = dict(checks=32)
         matcher = cv2.FlannBasedMatcher(index_params, search_params)
-    print(type,datetime.now()-start)
-
+    print(type, datetime.now() - start)
 
     # 매칭 및 매칭된 포인트 거리 정렬
     matches = matcher.match(des1, des2)
-    matches = sorted(matches, key=lambda x:x.distance)
+    matches = sorted(matches, key=lambda x: x.distance)
     good_matches = matches[:30]
-    
+
     # 매칭 결과 시각화
     img3 = cv2.drawMatches(img1, kp1, img2, kp2, good_matches, None, flags=2)
     cv2.imshow("Matching result", img3)
@@ -73,5 +77,5 @@ for type in list(feature_detector.keys()):
         matched_points2.append((int(pt2[0]), int(pt2[1])))
 
     # 픽셀 위치 출력
-    #print("Matched Points in Image1:", matched_points1)
-    #print("Matched Points in Image2:", matched_points2)
+    # print("Matched Points in Image1:", matched_points1)
+    # print("Matched Points in Image2:", matched_points2)

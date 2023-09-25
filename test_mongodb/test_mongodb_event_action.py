@@ -8,12 +8,12 @@ from pydantic import Field
 
 from datetime import datetime
 import asyncio
-import datetime
+import time
 
 
 class Event(Document):
-    created_at: Indexed(datetime) = Field(default_factory=datetime.utcnow)
-    updated_at: Indexed(datetime) = Field(default_factory=datetime.utcnow)
+    created_at: Indexed(datetime) = Field(default_factory=time.utcnow)
+    updated_at: Indexed(datetime) = Field(default_factory=time.utcnow)
     test_string: str
     boolean_test: bool
 
@@ -37,9 +37,9 @@ async def init():
 async def main():
     event = Event(test_string="hi", boolean_test=False)
     await event.insert()
-    datetime.sleep(2)
+    time.sleep(2)
     event = await Event.find_one({"boolean_test": "false"})
-    datetime.sleep(2)
+    time.sleep(2)
     await event.update({"$set": {"boolean_test": True}})
 
 
